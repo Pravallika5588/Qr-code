@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Code Generator</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      background: #fff;
+      color: #333;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    input, select {
+      padding: 10px;
+      font-size: 16px;
+      margin: 8px 0;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    label {
+      margin-top: 12px;
+      display: block;
+      font-weight: bold;
+    }
+
+    button {
+      background-color: #667eea;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      margin: 15px 5px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #5a67d8;
+    }
+
+    #qrcode {
+      margin-top: 30px;
+    }
+
+
+
+
+
+    
+  </style>
+</head>
+<body>
+  <h1>QR Code Generator</h1>
+  <div class="container">
+    <input type="text" id="text" value=" qr-code name   " placeholder="Enter URL to open" />
+
+    <label for="size">Size:</label>
+    <select id="size">
+      <option value="128">128 x 128</option>
+      <option value="256" selected>256 x 256</option>
+      <option value="512">512 x 512</option>
+    </select>
+
+    <label for="colorDark">QR Color:</label>
+    <input type="color" id="colorDark" value="#000000">
+
+    <label for="colorLight">Background Color:</label>
+    <input type="color" id="colorLight" value="#ffffff">
+
+    <label for="ecLevel">Error Correction:</label>
+    <select id="ecLevel">
+      <option value="L">Low (L)</option>
+      <option value="M">Medium (M)</option>
+      <option value="Q">Quartile (Q)</option>
+      <option value="H" selected>High (H)</option>
+    </select>
+
+    <button onclick="generateQRCode()">Generate</button>
+    <button onclick="downloadQRCode()">Download</button>
+
+    <div id="qrcode"></div>
+  </div>
+
+  <!-- QRCode.js Library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script>
+    let qr;
+
+    function generateQRCode() {
+      const container = document.getElementById("qrcode");
+      const url = document.getElementById("text").value;
+      const size = parseInt(document.getElementById("size").value);
+      const colorDark = document.getElementById("colorDark").value;
+      const colorLight = document.getElementById("colorLight").value;
+      const ecLevel = document.getElementById("ecLevel").value;
+
+      container.innerHTML = "";
+
+      if (!url) {
+        alert("https://pravallika5588.github.io/signup/");
+        return;
+      }
+
+      qr = new QRCode(container, {
+        text: url,
+        width: size,
+        height: size,
+        colorDark: colorDark,
+        colorLight: colorLight,
+        correctLevel: QRCode.CorrectLevel[ecLevel]
+      });
+    }
+
+    function downloadQRCode() {
+      if (!qr) return;
+      const img = document.querySelector("#qrcode img");
+      if (img) {
+        const link = document.createElement("a");
+        link.href = img.src;
+        link.download = "qr-code.png";
+        link.click();
+      } else {
+        alert("Please generate a QR code first.");
+      }
+    }
+  </script>
+</body>
+</html>
